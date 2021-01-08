@@ -9,6 +9,7 @@ import (
 func DoBasic() goproxy.ReqHandler {
 	log.Println("Do")
 	return goproxy.FuncReqHandler(func(req *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
+		log.Println("Do in FuncReqHandler")
 		return req, nil
 	})
 }
@@ -16,6 +17,7 @@ func DoBasic() goproxy.ReqHandler {
 func handleConnectBasic() goproxy.HttpsHandler {
 	log.Println("handleConnect")
 	return goproxy.FuncHttpsHandler(func(host string, ctx *goproxy.ProxyCtx) (*goproxy.ConnectAction, string) {
+		log.Println("handleConnect in FuncHttpsHandler")
 		return goproxy.OkConnect, host
 	})
 }
@@ -30,6 +32,8 @@ func SetProxyBasic(proxy *goproxy.ProxyHttpServer, f func(user, passwd string) b
 
 	proxy.OnRequest().HandleConnect(handleConnectBasic())
 
+	// DoFunc will process all incoming requests to the proxy.
+	// DoFunc is equivalent to proxy.OnRequest().Do(FuncReqHandler(f))
 	proxy.OnRequest().DoFunc(func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
 		log.Println("DoFunc0")
 		r.Header.Set("X-GoProxy","yxorPoG-X")
