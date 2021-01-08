@@ -5,10 +5,12 @@ import (
 	"github.com/elazarl/goproxy"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
-	username, password := "qwerasdf", "qwerasdf"
+	username := os.Getenv("USERNAME")
+	password := os.Getenv("PASSWORD")
 
 	proxy := goproxy.NewProxyHttpServer()
 	proxy.Verbose = true
@@ -17,6 +19,6 @@ func main() {
 		return user == username && password == pwd
 	})
 
-	log.Println("asdfasdfasdf")
+	log.Println("start proxy server at :8080")
 	log.Fatal(http.ListenAndServe(":8080", proxy))
 }
