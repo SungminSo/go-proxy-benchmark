@@ -9,5 +9,7 @@ go proxy의 이것저것
         - main.go
     - on_request
         - basic.go
+    - on_response
+        - stats.go
     - README.md
 ```
